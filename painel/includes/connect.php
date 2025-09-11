@@ -13,3 +13,5 @@ try {
     error_log('Connection failed: ' . $e->getMessage());
     $conn = false;
 }
+?>
+
