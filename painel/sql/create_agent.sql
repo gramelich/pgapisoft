@@ -1,0 +1,31 @@
+-- Demo agent for panel login tests
+INSERT INTO public.agents (
+    agentcode,
+    saldo,
+    senha,
+    "agentToken",
+    "secretKey",
+    probganho,
+    probbonus,
+    probganhortp,
+    probganhoinfluencer,
+    probbonusinfluencer,
+    probganhoaposta,
+    probganhosaldo,
+    callbackurl
+) VALUES (
+    'demo',
+    '0',
+    'senha123',
+    'demo-token',
+    'demo-secret',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    'http://localhost/callback'
+);
+

@@ -1,17 +1,15 @@
 <?php
-    $host = "localhost";
-    $port = "5432";
-    $dbname = "joaov";
-    $user = "postgres";
-    $password = "root123";
+$host = "localhost";
+$port = "5432";
+$dbname = "joaov";
+$user = "postgres";
+$password = "root123";
 
-    $conn_string = "host=$host port=$port dbname=$dbname user=$user password=$password";
-    $conn = pg_connect($conn_string);
-
-    if (!$conn) {
-        die("Connection failed: " . pg_last_error());
-    }
-
-    // Definir o conjunto de caracteres para utf8
-    pg_set_client_encoding($conn, "UTF8");
-?>
+try {
+    $conn = new PDO("pgsql:host={$host};port={$port};dbname={$dbname}", $user, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn->exec("SET CLIENT_ENCODING TO 'UTF8'");
+} catch (PDOException $e) {
+    error_log('Connection failed: ' . $e->getMessage());
+    $conn = false;
+}
