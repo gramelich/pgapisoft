@@ -17,5 +17,15 @@
         }
     } else {
         error_log('PostgreSQL extension is not enabled; enable extension=pgsql in php.ini');
+    try {
+        $conn = new PDO(
+            "pgsql:host=$host;port=$port;dbname=$dbname",
+            $user,
+            $password,
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+        $conn->exec("SET NAMES 'UTF8'");
+    } catch (PDOException $e) {
+        die("Connection failed: " . $e->getMessage());
     }
 ?>

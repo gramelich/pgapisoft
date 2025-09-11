@@ -1,4 +1,4 @@
--- Demo agent for panel login tests
+
 INSERT INTO public.agents (
     agentcode,
     saldo,
@@ -28,4 +28,3 @@ INSERT INTO public.agents (
     '0',
     'http://localhost/callback'
 );
-
