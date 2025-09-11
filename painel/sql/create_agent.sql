@@ -1,7 +1,7 @@
-INSERT INTO public.agents(
-    id,
+INSERT INTO public.agents (
     agentcode,
     saldo,
+    senha,
     "agentToken",
     "secretKey",
     probganho,
