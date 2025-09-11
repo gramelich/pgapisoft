@@ -1,10 +1,24 @@
 <?php
-// Bypass authentication and redirect directly to the panel
+    // TEMPORARY DEVELOPMENT LOGIN
+    // This script intentionally bypasses credential checks so you can access
+    // the panel without a valid user. Do NOT use in production.
 
-setcookie('admin_id', '1');
-setcookie('admin_pass', 'demo');
-setcookie('auth', 'admin_in');
+    $admin_agentCode = $_POST['agentCode'] ?? '';
+    $admin_senha = $_POST['senha'] ?? '';
+    $auth = 'admin_in';
 
-header('Location: /painel.php');
-exit;
+    $stmt = $conn->prepare('SELECT * FROM agents WHERE agentCode = :agentCode AND senha = :senha');
+    $stmt->execute([':agentCode' => $admin_agentCode, ':senha' => $admin_senha]);
 
+    if ($stmt->rowCount() === 0) {
+        http_response_code(400);
+        echo json_encode(['message' => 'Usúario/senha incorretos']);
+    } else {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        setcookie("admin_id", $row["id"]);
+        setcookie("admin_pass", $admin_senha);
+        setcookie("auth", $auth);
+        http_response_code(200);
+        echo json_encode(['message' => 'logado com sucesso', 'redirect' => '/painel.php']);
+    }
+?>
