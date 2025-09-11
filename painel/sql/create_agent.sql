@@ -1,3 +1,4 @@
+
 INSERT INTO public.agents (
     agentcode,
     saldo,
@@ -9,19 +10,21 @@ INSERT INTO public.agents (
     probganhortp,
     probganhoinfluencer,
     probbonusinfluencer,
-    probganhosaldo,
     probganhoaposta,
-    callbackurl,
-    limitadorchicky
+    probganhosaldo,
+    callbackurl
 ) VALUES (
-    'demo',          -- agentcode usado no login
-    'senha123',      -- senha usada no login
-    0,               -- saldo inicial
-    'token-demo',    -- token do agente
-    'secret-demo',   -- secret key
-    0, 0, 0, 0, 0,   -- probabilidades
-    0,               -- probganhosaldo
-    0,               -- probganhoaposta
-    '',              -- callbackurl
-    0                -- limitadorchicky
+    'demo',
+    '0',
+    'senha123',
+    'demo-token',
+    'demo-secret',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    '0',
+    'http://localhost/callback'
 );
