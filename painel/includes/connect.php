@@ -5,13 +5,17 @@
     $user = "postgres";
     $password = "root123";
 
-    $conn_string = "host=$host port=$port dbname=$dbname user=$user password=$password";
-    $conn = pg_connect($conn_string);
+    $conn = false;
 
-    if (!$conn) {
-        die("Connection failed: " . pg_last_error());
+    if (function_exists('pg_connect')) {
+        $conn_string = "host=$host port=$port dbname=$dbname user=$user password=$password";
+        $conn = @pg_connect($conn_string);
+        if ($conn) {
+            pg_set_client_encoding($conn, "UTF8");
+        } else {
+            error_log('Connection failed: '.pg_last_error());
+        }
+    } else {
+        error_log('PostgreSQL extension is not enabled; enable extension=pgsql in php.ini');
     }
-
-    // Definir o conjunto de caracteres para utf8
-    pg_set_client_encoding($conn, "UTF8");
 ?>
