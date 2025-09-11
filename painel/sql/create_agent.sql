@@ -1,4 +1,3 @@
-
 INSERT INTO public.agents (
     agentcode,
     saldo,
