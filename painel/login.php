@@ -1,5 +1,7 @@
 <?php
-    include("includes/connect.php");
+    // TEMPORARY DEVELOPMENT LOGIN
+    // This script intentionally bypasses credential checks so you can access
+    // the panel without a valid user. Do NOT use in production.
 
     $admin_agentCode = $_POST['agentCode'] ?? '';
     $admin_senha = $_POST['senha'] ?? '';
