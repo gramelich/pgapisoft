@@ -1,7 +1,7 @@
--- SQL script to create a demo agent for logging into the panel
-INSERT INTO agents (
+-- SQL prepared statement to insert an agent
+INSERT INTO public.agents(
+    id,
     agentcode,
-    senha,
     saldo,
     "agentToken",
     "secretKey",
@@ -26,4 +26,3 @@ INSERT INTO agents (
     '',              -- callbackurl
     0                -- limitadorchicky
 );
-
