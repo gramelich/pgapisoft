@@ -1,50 +1,38 @@
-# ----------------------------------
-# ESTÁGIO 1: BUILD (Compilação)
-# ----------------------------------
-# Usa Node 20 (estável e moderno) para a fase de build
+# Etapa de build
 FROM node:20-alpine AS builder
 
-# Define o diretório de trabalho dentro do contêiner
 WORKDIR /usr/src/app
 
-# Copia package.json e lockfiles da subpasta 'api'
-# A subpasta 'api/' é o caminho no contexto de build (repositório)
-COPY api/package*.json ./
+# Copiar arquivos de dependências
+COPY package*.json ./
+COPY tsconfig*.json ./
+COPY nest-cli.json ./
 
-# Instala todas as dependências (incluindo as de desenvolvimento, necessárias para a compilação)
-RUN npm install
+# Instalar dependências
+RUN npm ci
 
-# Copia o código fonte da API
-COPY api/ .
+# Copiar código fonte
+COPY src ./src
 
-# EXECUTA A COMPILAÇÃO DO TYPESCRIPT: Cria a pasta 'dist/'
-# Este passo executa o script "build": "nest build"
+# Build da aplicação
 RUN npm run build
-# ----------------------------------
 
+# Etapa de produção
+FROM node:20-alpine
 
-# ----------------------------------
-# ESTÁGIO 2: PRODUCTION (Execução)
-# ----------------------------------
-# Usa a imagem base leve do Node 20 para o ambiente de produção
-FROM node:20-alpine AS production
-
-# Define o diretório de trabalho
 WORKDIR /usr/src/app
 
-# Copia apenas os arquivos essenciais da fase de build:
-# 1. Copia o package.json (necessário para o 'npm run start:prod')
-COPY --from=builder /usr/src/app/package.json ./
+# Copiar arquivos de dependências
+COPY package*.json ./
 
-# 2. Copia a pasta node_modules (dependências instaladas)
-COPY --from=builder /usr/src/app/node_modules ./node_modules
+# Instalar apenas dependências de produção
+RUN npm ci --only=production && npm cache clean --force
 
-# 3. Copia a pasta 'dist' (o código JavaScript COMPILADO)
+# Copiar build do estágio anterior
 COPY --from=builder /usr/src/app/dist ./dist
 
-# Expõe a porta (padrão 3000 para NestJS)
+# Expor porta (ajuste se necessário)
 EXPOSE 3010
 
-# Define o comando de INÍCIO para produção. 
-# Usamos o 'start:prod', que executa o código compilado em 'dist/main.js'.
-CMD [ "npm", "run", "start:prod" ]
+# Iniciar aplicação
+CMD ["node", "dist/main.js"]
