@@ -1,21 +1,12 @@
-# Usa uma imagem base oficial do Node.js
-FROM node:18-alpine
-
-# Define o diretório de trabalho no container
+# Dockerfile
+# ...
 WORKDIR /usr/src/app
 
-# Copia os arquivos package.json e package-lock.json (ou yarn.lock)
-# para instalar as dependências
-COPY package*.json ./
-
-# Instala as dependências
-RUN npm install
-
-# Copia o restante do código da aplicação
+# Copia TUDO (incluindo package.json e node_modules/ se não estiverem no .dockerignore)
 COPY . .
 
-# Expõe a porta que a aplicação escuta (ajuste conforme necessário, ex: 3000, 8080)
-EXPOSE 3005
+# Instala as dependências (agora package.json está em /usr/src/app)
+RUN npm install
 
-# Comando para iniciar a aplicação
-CMD [ "npm", "start" ]
+# Inicia a aplicação
+CMD ["npm", "start"]
